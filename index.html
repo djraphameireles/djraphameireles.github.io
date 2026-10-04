@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título focado em SEO -->
+    <title>DJ Rapha Meireles | Música Eletrônica Experimental & Design Sonoro</title>
+
+    <!-- Descrição para o Google -->
+    <meta name="description" content="Portfólio oficial do DJ Rapha Meireles. Produtor musical, compositor e sound designer explorando as fronteiras da música eletrônica experimental, EDM e trilhas sonoras.">
+
+    <!-- Palavras-chave -->
+    <meta name="keywords" content="DJ, produtor musical, música eletrônica experimental, sound design, compositor, trilha sonora, Taboão da Serra, São Paulo">
+
+    <!-- Tags de Compartilhamento (Open Graph) para Redes Sociais -->
+    <meta property="og:title" content="DJ Rapha Meireles | Portfólio">
+    <meta property="og:description" content="Produtor musical, compositor e sound designer. Ouça meus DJ sets e faixas autorais.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://SEU_USUARIO.github.io">
+    <meta property="og:image" content="https://SEU_USUARIO.github.io/imagem-compartilhamento.jpg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Variáveis de Tema */
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: default;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 300;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body.player-open { overflow: hidden; }
+
+        /* Animações Fluidas de Página */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BOTÃO DE MENU (MUTAÇÃO GEOMÉTRICA) */
+        .menu-toggle-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 200;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-toggle-btn:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            display: block;
+        }
+
+        .menu-icon span {
+            position: absolute;
+            height: 2px;
+            width: 30px;
+            background-color: currentColor;
+            left: 0;
+            top: 14px;
+            transform-origin: center;
+            transition: transform var(--transition-smooth);
+            will-change: transform;
+        }
+
+        body:not(.menu-collapsed) .menu-icon span:nth-child(1) { transform: translate(0, -14px) rotate(0deg); }
+        body:not(.menu-collapsed) .menu-icon span:nth-child(2) { transform: translate(-14px, 0) rotate(-90deg); }
+        body:not(.menu-collapsed) .menu-icon span:nth-child(3) { transform: translate(14px, 0) rotate(90deg); }
+        body:not(.menu-collapsed) .menu-icon span:nth-child(4) { transform: translate(0, 14px) rotate(0deg); }
+
+        body.menu-collapsed .menu-icon span:nth-child(1) { transform: translate(0, -12px) rotate(0deg); }
+        body.menu-collapsed .menu-icon span:nth-child(2) { transform: translate(0, -4px) rotate(0deg); }
+        body.menu-collapsed .menu-icon span:nth-child(3) { transform: translate(0, 4px) rotate(0deg); }
+        body.menu-collapsed .menu-icon span:nth-child(4) { transform: translate(0, 12px) rotate(0deg); }
+
+        /* PAINEL LATERAL (SIDEBAR) */
+        .sidebar {
+            width: 320px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            z-index: 100;
+            transform: translateX(0);
+            transition: transform var(--transition-smooth);
+        }
+
+        .logo-area {
+            padding: 7rem 2rem 3rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 0.9;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 2rem;
+            text-align: left;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+        }
+
+        .nav-btn:hover {
+            padding-left: 3rem;
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        .nav-btn.active-link {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            padding-left: 3rem;
+        }
+
+        /* ÁREA DE CONTEÚDO PRINCIPAL */
+        .main-content {
+            margin-left: 320px;
+            width: calc(100% - 320px);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left var(--transition-smooth), width var(--transition-smooth);
+        }
+
+        body.menu-collapsed .sidebar { transform: translateX(-100%); }
+        body.menu-collapsed .main-content { margin-left: 0; width: 100%; }
+
+        /* FAIXA CONTÍNUA (MARQUEE) */
+        .marquee-wrapper {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--text-color);
+            color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: marquee 25s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* PÁGINAS */
+        .page {
+            display: none;
+            padding: 5rem 4rem;
+            max-width: 1400px;
+        }
+
+        .page.active { display: block; }
+        .animate-page { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 4rem;
+        }
+
+        /* HERO TEXT */
+        .hero-text {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        /* ESTILO DO E-MAIL */
+        .email-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            cursor: pointer;
+        }
+        
+        .email-link:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* REDES SOCIAIS */
+        .links-container {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            max-width: 800px;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .social-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .social-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--text-color);
+            transition: width var(--transition-smooth);
+        }
+
+        .social-link:hover::after { width: 100%; }
+
+        /* TRACKLIST / MÚSICAS */
+        .track-list { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--border-color); }
+        .track-item { display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 2.5rem 1rem; border-bottom: 1px solid var(--border-color); transition: all var(--transition-smooth); }
+        .track-item:hover { background-color: var(--text-color); color: var(--bg-color); padding-left: 2.5rem; }
+        .track-info h3 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; letter-spacing: -1px; }
+        .track-tag { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+        
+        .play-btn {
+            justify-self: end; background: transparent; color: inherit; border: 1px solid currentColor; padding: 1rem 3rem;
+            font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .play-btn:hover { background: var(--bg-color); color: var(--text-color); }
+        .track-item:hover .play-btn:hover { background: var(--bg-color); color: var(--text-color); border-color: var(--bg-color); }
+
+        /* BOTÃO DE VOLTAR COM SETA */
+        .back-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity var(--transition-smooth);
+        }
+        .back-btn:hover { opacity: 0.6; }
+
+        /* PLAYER DE ÁUDIO (JANELA FLUTUANTE) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: grid;
+            place-items: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.is-open { opacity: 1; visibility: visible; }
+
+        /* ESTRUTURA NOVA DA JANELA */
+        .player-window {
+            position: relative;
+            /* Largura fluida em celulares, mas controlada por max-width em desktops */
+            width: 100%; 
+            max-width: 900px; 
+            background: var(--bg-color);
+            border: 1px solid var(--text-color);
+            display: flex;
+            flex-direction: column; 
+            transform: translateY(1rem);
+            /* Transição suave tanto no movimento quanto na mudança de largura e altura */
+            transition: transform 0.3s ease, max-width 0.3s ease;
+        }
+        .modal-overlay.is-open .player-window { transform: translateY(0); }
+
+        .player-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .player-back {
+            position: static;
+        }
+
+        .player-title-text {
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .player-frame {
+            display: block;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            transition: height 0.3s ease;
+        }
+
+        .player-message {
+            display: none;
+            padding: 4rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+        .player-message.is-visible { display: block; }
+
+        /* PÁGINA DE TEXTO (DESLIZANTE) */
+        .text-page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 400;
+            background-color: var(--bg-color);
+            overflow-y: auto;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: transform var(--transition-smooth), visibility var(--transition-smooth);
+        }
+        
+        .text-page-overlay.is-open {
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .text-page-back {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background-color: var(--bg-color);
+            padding: 0.5rem 1rem 0.5rem 0;
+        }
+
+        .text-page-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 8rem 2rem 6rem 2rem;
+        }
+
+        /* LISTA DE ARTIGOS */
+        .artigo-item {
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+        }
+        .artigo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            transition: all var(--transition-smooth);
+        }
+        .artigo-titulo {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            transition: color var(--transition-smooth);
+        }
+        .artigo-item:hover .artigo-header { padding-left: 1rem; }
+        .artigo-item:hover .artigo-titulo { color: rgba(255, 255, 255, 0.5); }
+        .artigo-data {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+        
+        /* CONTEÚDO DENTRO DA PÁGINA DO TEXTO */
+        .text-title-text {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .text-date-text {
+            margin-bottom: 4rem;
+            display: block;
+        }
+
+        .artigo-conteudo-modal {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .artigo-conteudo-modal p { margin-bottom: 2rem; }
+
+        /* RODAPÉ GLOBAL (COPYRIGHT) */
+        .site-footer {
+            margin-top: auto;
+            padding: 2rem 4rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+
+        /* RESPONSIVO MÓVEL */
+        @media (max-width: 900px) {
+            html, body { overflow-x: hidden; max-width: 100%; }
+            body { flex-direction: column; }
+            
+            .sidebar { width: 280px; border-right: 1px solid var(--border-color); z-index: 150; }
+            .nav-menu { flex-direction: column; }
+            .main-content { margin-left: 0 !important; width: 100% !important; max-width: 100vw; }
+            .page { padding: 6rem 1.5rem 4rem 1.5rem; width: 100%; box-sizing: border-box; }
+            
+            .email-link {
+                white-space: nowrap;
+                font-size: min(5.5vw, 1.5rem);
+                display: block;
+                width: 100%;
+            }
+
+            .track-item { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 1rem; }
+            .track-item:hover { padding-left: 1rem; }
+            .play-btn { justify-self: start; width: 100%; }
+
+            .hero-text { font-size: clamp(2.5rem, 10vw, 4rem); word-break: normal; line-height: 1.1; margin-bottom: 1.5rem; }
+            
+            .page-title { font-size: clamp(2rem, 9vw, 3rem); word-break: normal; }
+            .logo { word-break: normal; }
+            
+            .modal-overlay { padding: 1rem; }
+            .player-header { padding: 1.5rem 1rem; }
+            
+            .artigo-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            
+            .text-page-back { top: 1.5rem; left: 1.5rem; }
+            .text-page-content { padding: 6rem 1.5rem 4rem 1.5rem; }
+
+            .site-footer { padding: 2rem 1.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <button id="menu-toggle" class="menu-toggle-btn" onclick="toggleMenu()" aria-label="Abrir/Fechar Menu">
+        <div class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo">DJ Rapha<br>Meireles</div>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn active-link" onclick="mudarPagina('apresentacao', this)">Apresentação</button>
+            <button class="nav-btn" onclick="mudarPagina('textos', this)">Textos</button>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="marquee-wrapper">
+            <div class="marquee-text">
+                MÚSICA ELETRÔNICA EXPERIMENTAL &nbsp;&nbsp;//&nbsp;&nbsp; COMPOSIÇÃO &nbsp;&nbsp;//&nbsp;&nbsp; PERFORMANCE &nbsp;&nbsp;//&nbsp;&nbsp; DESIGN SONORO &nbsp;&nbsp;//&nbsp;&nbsp; MÚSICA ELETRÔNICA EXPERIMENTAL &nbsp;&nbsp;//&nbsp;&nbsp; COMPOSIÇÃO &nbsp;&nbsp;//&nbsp;&nbsp; PERFORMANCE &nbsp;&nbsp;//&nbsp;&nbsp; DESIGN SONORO &nbsp;&nbsp;//&nbsp;&nbsp;
+            </div>
+        </div>
+
+        <section id="apresentacao" class="page active animate-page">
+            <div class="hero-text">DJ RAPHA<br>MEIRELES</div>
+            
+            <div style="max-width: 800px; font-size: 1.5rem; line-height: 1.6; margin-top: 3rem;">
+                
+                <div style="color: rgba(255,255,255,0.7); font-size: 1.2rem;">
+                    <p style="margin-bottom: 1.5rem;">Nascido em Taboão da Serra (SP), atuo há mais de dez anos com áudio. DJ, produtor musical, compositor e sound designer, minha identidade artística se constrói na fusão direta da música brasileira com a eletrônica experimental.</p>
+                    <p style="margin-bottom: 1.5rem;">Minha sonoridade rompe fronteiras ao unir a energia da EDM e do funk a timbres industriais e harmonias tensas, buscando sempre exaltar a cultura brasileira. Essa mesma versatilidade funcional me permite compor música ambiente, trilhas sonoras, soundscapes e efeitos sonoros e atuar em diversas frentes da música e do áudio.</p>
+                    <p style="margin-bottom: 1.5rem;">Autodidata desde o ensino médio, consolidei minha técnica no bacharelado em Música - Composição pela UFPel. Ao longo da minha trajetória, desenvolvi habilidades sólidas em arranjo, orquestração, tratamento sonoro, combinação textural, mixagem e masterização, além de buscar formações específicas em captação de voz, sonoplastia e discotecagem digital.</p>
+                    <p>Hoje, sigo expandindo minha pesquisa. Performo e produzo tanto faixas autorais quanto trabalhos para outros artistas, explorando continuamente novas possibilidades na cena contemporânea, e me apresento como DJ em lugares diversos.</p>
+                </div>
+
+                <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; margin-top: 4rem; margin-bottom: 1rem; opacity: 0.6;">Contato & Booking</p>
+                <a href="mailto:djraphameireles@gmail.com" class="email-link">djraphameireles@gmail.com</a>
+            </div>
+
+            <div class="links-container">
+                <div style="color: rgba(255,255,255,0.7); font-size: 1.2rem; margin-bottom: 2rem;">
+                    <p>Todo o meu material, incluindo minhas músicas autorais e meus DJ sets, encontra-se disponível nos meus perfis oficiais. Escolha a plataforma de sua preferência abaixo para ouvir o meu trabalho:</p>
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://www.instagram.com/raphameireles" target="_blank" class="social-link">Instagram</a>
+                    <a href="https://www.youtube.com/@DJRaphaMeireles/" target="_blank" class="social-link">YouTube</a>
+                    <a href="https://soundcloud.com/djraphameireles" target="_blank" class="social-link">SoundCloud</a>
+                    <a href="https://djraphameireles.bandcamp.com/" target="_blank" class="social-link">Bandcamp</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="textos" class="page">
+            <h2 class="page-title">Textos</h2>
+                 <div style="color: rgba(255,255,255,0.7); font-size: 1.2rem;">
+                    <p style="margin-bottom: 1.5rem;">Clique e descubra minhas reflexões sobre música, arte e cultura.</p>
+                 </div>
+
+            <div style="max-width: 800px; font-size: 1.5rem; line-height: 1.6; margin-top: 3rem;">
+                <div style="color: rgba(255,255,255,0.7); font-size: 2rem;">
+                    <p style="margin-bottom: 1.5rem;">    Em breve...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RODAPÉ FIXO NO FINAL DO CONTEÚDO PRINCIPAL -->
+        <footer class="site-footer">
+            © 2026 DJ Rapha Meireles. Todos os direitos reservados.
+        </footer>
+
+    </main>
+
+    <!-- MODAL DO PLAYER DE MÚSICA -->
+    <div id="player-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="player-title" aria-hidden="true">
+        <!-- Adicionei o ID player-window aqui para o JavaScript controlar a largura -->
+        <div id="player-window" class="player-window">
+            <div class="player-header">
+                <button id="player-close" class="back-btn player-back" type="button" aria-label="Voltar">&#8592; Voltar</button>
+                <h2 id="player-title" class="player-title-text"></h2>
+            </div>
+            <iframe id="player-frame" class="player-frame" title="Player de música" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            <p id="player-message" class="player-message">O link deste player ainda será adicionado.</p>
+        </div>
+    </div>
+
+    <!-- NOVA PÁGINA DE TEXTOS (DESLIZANTE) -->
+    <div id="text-modal" class="text-page-overlay" role="dialog" aria-modal="true" aria-labelledby="text-modal-title" aria-hidden="true">
+        <button id="text-close" class="back-btn text-page-back" type="button" aria-label="Voltar">&#8592; Voltar</button>
+        
+        <div class="text-page-content">
+            <h2 id="text-modal-title" class="text-title-text"></h2>
+            <span id="text-modal-date" class="artigo-data text-date-text"></span>
+            <div id="text-modal-body" class="artigo-conteudo-modal"></div>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+
+        // Configuração inicial do menu responsivo
+        window.onload = () => {
+            if (window.innerWidth <= 900) {
+                body.classList.add('menu-collapsed');
+            }
+        };
+
+        function toggleMenu() {
+            body.classList.toggle('menu-collapsed');
+        }
+
+        // Função de navegação entre as abas
+        function mudarPagina(idDaPagina, botaoClicado) {
+            const paginas = document.querySelectorAll('.page');
+            const botoes = document.querySelectorAll('.nav-btn');
+
+            paginas.forEach(pagina => pagina.classList.remove('active', 'animate-page'));
+            botoes.forEach(botao => botao.classList.remove('active-link'));
+
+            const paginaAlvo = document.getElementById(idDaPagina);
+            botaoClicado.classList.add('active-link');
+            
+            void paginaAlvo.offsetWidth; 
+            paginaAlvo.classList.add('active', 'animate-page');
+            
+            // Fecha o menu lateral automaticamente ao clicar em um link
+            body.classList.add('menu-collapsed');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==========================================
+        // LÓGICA DO MODAL DE ÁUDIO
+        // ==========================================
+        const playerModal = document.getElementById('player-modal');
+        const playerWindow = document.getElementById('player-window');
+        const playerFrame = document.getElementById('player-frame');
+        const playerTitle = document.getElementById('player-title');
+        const playerMessage = document.getElementById('player-message');
+        const playerClose = document.getElementById('player-close');
+        let ultimoBotaoPlayer;
+
+        function abrirPlayer(botao) {
+            ultimoBotaoPlayer = botao;
+            playerTitle.textContent = botao.dataset.playerTitle;
+            playerFrame.src = botao.dataset.playerUrl;
+            
+            // 1. Ajusta a ALTURA exata que o iframe vai ter (ex: 120px ou 340px)
+            if (botao.dataset.playerHeight) {
+                playerFrame.style.height = botao.dataset.playerHeight;
+                playerFrame.style.aspectRatio = "unset"; 
+            } else {
+                playerFrame.style.height = "auto";
+                playerFrame.style.aspectRatio = "16 / 9"; 
+            }
+
+            // 2. Ajusta a LARGURA da janela inteira para não sobrar espaço preto
+            if (botao.dataset.playerWidth) {
+                playerWindow.style.maxWidth = botao.dataset.playerWidth;
+            } else {
+                playerWindow.style.maxWidth = "900px"; // Padrão largo para vídeos e afins
+            }
+
+            playerFrame.style.display = botao.dataset.playerUrl ? 'block' : 'none';
+            playerMessage.classList.toggle('is-visible', !botao.dataset.playerUrl);
+            playerModal.classList.add('is-open');
+            playerModal.setAttribute('aria-hidden', 'false');
+            body.classList.add('player-open'); // Trava o scroll do fundo
+            playerClose.focus();
+        }
+
+        function fecharPlayer() {
+            playerModal.classList.remove('is-open');
+            playerModal.setAttribute('aria-hidden', 'true');
+            playerFrame.src = '';
+            body.classList.remove('player-open');
+            if (ultimoBotaoPlayer) ultimoBotaoPlayer.focus();
+        }
+
+        document.querySelectorAll('.play-btn').forEach((botao) => {
+            botao.addEventListener('click', () => abrirPlayer(botao));
+        });
+
+        // Só fecha ao clicar intencionalmente na seta
+        playerClose.addEventListener('click', fecharPlayer);
+
+        // ==========================================
+        // LÓGICA DA PÁGINA DE TEXTOS
+        // ==========================================
+        const textModal = document.getElementById('text-modal');
+        const textModalTitle = document.getElementById('text-modal-title');
+        const textModalDate = document.getElementById('text-modal-date');
+        const textModalBody = document.getElementById('text-modal-body');
+        const textClose = document.getElementById('text-close');
+        let ultimoBotaoTexto;
+
+        function abrirTexto(elemento) {
+            ultimoBotaoTexto = elemento;
+            
+            const titulo = elemento.querySelector('.artigo-titulo').textContent;
+            const data = elemento.querySelector('.artigo-data').textContent;
+            const conteudo = elemento.querySelector('.artigo-conteudo-oculto').innerHTML;
+
+            textModalTitle.textContent = titulo;
+            textModalDate.textContent = data;
+            textModalBody.innerHTML = conteudo;
+
+            textModal.classList.add('is-open');
+            textModal.setAttribute('aria-hidden', 'false');
+            body.classList.add('player-open'); 
+            
+            // Retorna o scroll para o topo toda vez que uma página abre
+            textModal.scrollTop = 0;
+            
+            textClose.focus();
+        }
+
+        function fecharTexto() {
+            textModal.classList.remove('is-open');
+            textModal.setAttribute('aria-hidden', 'true');
+            body.classList.remove('player-open');
+            if (ultimoBotaoTexto) ultimoBotaoTexto.focus();
+        }
+
+        // Só fecha ao clicar intencionalmente na seta
+        textClose.addEventListener('click', fecharTexto);
+    </script>
+</body>
+</html>
