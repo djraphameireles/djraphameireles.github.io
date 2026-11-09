@@ -13,13 +13,42 @@
     <!-- Palavras-chave -->
     <meta name="keywords" content="DJ, produtor musical, música eletrônica experimental, sound design, compositor, trilha sonora, Taboão da Serra, São Paulo">
 
+    <!-- (7) Metadados essenciais -->
+    <link rel="canonical" href="https://djraphameireles.com.br/">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#000000">
+
     <!-- Tags de Compartilhamento (Open Graph) para Redes Sociais -->
     <meta property="og:title" content="DJ Rapha Meireles | Portfólio">
     <meta property="og:description" content="Produtor musical, compositor e sound designer. Ouça meus DJ sets e faixas autorais.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://djraphameireles.com.br">
     <meta property="og:image" content="https://djraphameireles.com.br/imagem-compartilhamento.jpg">
-    
+
+    <!-- (7) Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DJ Rapha Meireles | Portfólio">
+    <meta name="twitter:description" content="Produtor musical, compositor e sound designer.">
+    <meta name="twitter:image" content="https://djraphameireles.com.br/imagem-compartilhamento.jpg">
+
+    <!-- (7) JSON-LD para SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Raphael Meireles",
+      "alternateName": "DJ Rapha Meireles",
+      "jobTitle": "Produtor musical, compositor e sound designer",
+      "url": "https://djraphameireles.com.br",
+      "sameAs": [
+        "https://www.instagram.com/raphameireles",
+        "https://www.youtube.com/@DJRaphaMeireles/",
+        "https://soundcloud.com/djraphameireles",
+        "https://djraphameireles.bandcamp.com/"
+      ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
@@ -37,7 +66,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: default;
         }
 
         body {
@@ -50,9 +78,43 @@
             display: flex;
             overflow-x: hidden;
             min-height: 100vh;
+            /* (8) Cursor padrão contextual em vez de global */
+            cursor: default;
         }
 
-        body.player-open { overflow: hidden; }
+        /* (8) Cursores apropriados por tipo de elemento */
+        p, .artigo-conteudo-modal, .email-link, .artigo-conteudo-modal * {
+            cursor: auto;
+        }
+        button, a, .nav-btn, .play-btn, .artigo-item, .back-to-top, .menu-toggle-btn {
+            cursor: pointer;
+        }
+
+        /* (13) Trava de scroll robusta para iOS */
+        body.player-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        /* (18 - incluído por dependência de foco) Foco visível consistente */
+        :focus-visible {
+            outline: 2px solid var(--text-color);
+            outline-offset: 3px;
+        }
+
+        /* (5) Respeita usuários sensíveis a movimento */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .marquee-text { animation: none; }
+            html { scroll-behavior: auto; }
+        }
 
         /* Animações Fluidas de Página */
         @keyframes slideUpFade {
@@ -70,7 +132,6 @@
             color: var(--text-color);
             border: 1px solid var(--border-color);
             padding: 1rem;
-            cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             justify-content: center;
@@ -159,7 +220,6 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            cursor: pointer;
             transition: all var(--transition-smooth);
         }
 
@@ -254,7 +314,6 @@
             color: #ffffff;
             text-decoration: underline;
             text-underline-offset: 4px;
-            cursor: pointer;
         }
         
         .email-link:hover {
@@ -285,7 +344,6 @@
             letter-spacing: 2px;
             position: relative;
             padding-bottom: 5px;
-            cursor: pointer;
         }
 
         .social-link::after {
@@ -310,7 +368,7 @@
         
         .play-btn {
             justify-self: end; background: transparent; color: inherit; border: 1px solid currentColor; padding: 1rem 3rem;
-            font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease;
         }
         .play-btn:hover { background: var(--bg-color); color: var(--text-color); }
         .track-item:hover .play-btn:hover { background: var(--bg-color); color: var(--text-color); border-color: var(--bg-color); }
@@ -325,7 +383,6 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 2px;
-            cursor: pointer;
             z-index: 10;
             display: flex;
             align-items: center;
@@ -351,10 +408,8 @@
         }
         .modal-overlay.is-open { opacity: 1; visibility: visible; }
 
-        /* ESTRUTURA NOVA DA JANELA */
         .player-window {
             position: relative;
-            /* Largura fluida em celulares, mas controlada por max-width em desktops */
             width: 100%; 
             max-width: 900px; 
             background: var(--bg-color);
@@ -362,7 +417,6 @@
             display: flex;
             flex-direction: column; 
             transform: translateY(1rem);
-            /* Transição suave tanto no movimento quanto na mudança de largura e altura */
             transition: transform 0.3s ease, max-width 0.3s ease;
         }
         .modal-overlay.is-open .player-window { transform: translateY(0); }
@@ -440,7 +494,6 @@
         /* LISTA DE ARTIGOS */
         .artigo-item {
             border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
             transition: all var(--transition-smooth);
         }
         .artigo-header {
@@ -502,6 +555,34 @@
             opacity: 0.6;
         }
 
+        /* (11) BOTÃO VOLTAR AO TOPO */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1.5rem;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
         /* RESPONSIVO MÓVEL */
         @media (max-width: 900px) {
             html, body { overflow-x: hidden; max-width: 100%; }
@@ -537,6 +618,8 @@
             .text-page-content { padding: 6rem 1.5rem 4rem 1.5rem; }
 
             .site-footer { padding: 2rem 1.5rem; text-align: center; }
+
+            .back-to-top { bottom: 1.25rem; right: 1.25rem; width: 44px; height: 44px; }
         }
     </style>
 </head>
@@ -549,8 +632,14 @@
         }
     </script>
 
-    <button id="menu-toggle" class="menu-toggle-btn" onclick="toggleMenu()" aria-label="Abrir/Fechar Menu">
-        <div class="menu-icon">
+    <!-- (3) aria-expanded e aria-controls no botão do menu -->
+    <!-- (4) Ícone decorativo com aria-hidden -->
+    <button id="menu-toggle" class="menu-toggle-btn"
+            aria-label="Abrir menu"
+            aria-expanded="true"
+            aria-controls="sidebar"
+            type="button">
+        <div class="menu-icon" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
@@ -558,19 +647,20 @@
         </div>
     </button>
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="logo-area">
             <div class="logo">DJ Rapha<br>Meireles</div>
         </div>
-        <nav class="nav-menu">
-            <button class="nav-btn active-link" onclick="mudarPagina('apresentacao', this)">Apresentação</button>
-            <button class="nav-btn" onclick="mudarPagina('textos', this)">Textos</button>
+        <nav class="nav-menu" aria-label="Navegação principal">
+            <!-- (9) data-page em vez de onclick -->
+            <button class="nav-btn active-link" data-page="apresentacao" type="button">Apresentação</button>
+            <button class="nav-btn" data-page="textos" type="button">Textos</button>
         </nav>
     </aside>
 
     <main class="main-content">
         
-        <div class="marquee-wrapper">
+        <div class="marquee-wrapper" aria-hidden="true">
             <div class="marquee-text">
                 MÚSICA ELETRÔNICA EXPERIMENTAL &nbsp;&nbsp;//&nbsp;&nbsp; COMPOSIÇÃO &nbsp;&nbsp;//&nbsp;&nbsp; PERFORMANCE &nbsp;&nbsp;//&nbsp;&nbsp; DESIGN SONORO &nbsp;&nbsp;//&nbsp;&nbsp; MÚSICA ELETRÔNICA EXPERIMENTAL &nbsp;&nbsp;//&nbsp;&nbsp; COMPOSIÇÃO &nbsp;&nbsp;//&nbsp;&nbsp; PERFORMANCE &nbsp;&nbsp;//&nbsp;&nbsp; DESIGN SONORO &nbsp;&nbsp;//&nbsp;&nbsp;
             </div>
@@ -599,11 +689,12 @@
                     <p>Todo o meu material, incluindo minhas músicas autorais e meus DJ sets, encontra-se disponível nos meus perfis oficiais. Escolha a plataforma de sua preferência abaixo para ouvir o meu trabalho:</p>
                 </div>
                 
+                <!-- (6) rel="noopener noreferrer" em links externos -->
                 <div class="social-links">
-                    <a href="https://www.instagram.com/raphameireles" target="_blank" class="social-link">Instagram</a>
-                    <a href="https://www.youtube.com/@DJRaphaMeireles/" target="_blank" class="social-link">YouTube</a>
-                    <a href="https://soundcloud.com/djraphameireles" target="_blank" class="social-link">SoundCloud</a>
-                    <a href="https://djraphameireles.bandcamp.com/" target="_blank" class="social-link">Bandcamp</a>
+                    <a href="https://www.instagram.com/raphameireles" target="_blank" rel="noopener noreferrer" class="social-link">Instagram</a>
+                    <a href="https://www.youtube.com/@DJRaphaMeireles/" target="_blank" rel="noopener noreferrer" class="social-link">YouTube</a>
+                    <a href="https://soundcloud.com/djraphameireles" target="_blank" rel="noopener noreferrer" class="social-link">SoundCloud</a>
+                    <a href="https://djraphameireles.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="social-link">Bandcamp</a>
                 </div>
             </div>
         </section>
@@ -628,9 +719,11 @@
 
     </main>
 
+    <!-- (11) Botão flutuante "voltar ao topo" -->
+    <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo" type="button">↑</button>
+
     <!-- MODAL DO PLAYER DE MÚSICA -->
     <div id="player-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="player-title" aria-hidden="true">
-        <!-- Adicionei o ID player-window aqui para o JavaScript controlar a largura -->
         <div id="player-window" class="player-window">
             <div class="player-header">
                 <button id="player-close" class="back-btn player-back" type="button" aria-label="Voltar">&#8592; Voltar</button>
@@ -655,14 +748,28 @@
     <script>
         const body = document.body;
 
-        // (A inicialização do menu responsivo agora é feita por um script inline
-        // no topo do <body>, evitando o "flash" do menu abrindo antes de fechar.)
+        // ==========================================
+        // (3) Estado inicial do aria-expanded
+        // ==========================================
+        const menuToggle = document.getElementById('menu-toggle');
+
+        function atualizarAriaMenu() {
+            const collapsed = body.classList.contains('menu-collapsed');
+            menuToggle.setAttribute('aria-expanded', String(!collapsed));
+            menuToggle.setAttribute('aria-label', collapsed ? 'Abrir menu' : 'Fechar menu');
+        }
+        atualizarAriaMenu();
 
         function toggleMenu() {
             body.classList.toggle('menu-collapsed');
+            atualizarAriaMenu();
         }
+        menuToggle.addEventListener('click', toggleMenu);
 
-        // Função de navegação entre as abas
+        // ==========================================
+        // (9) Navegação via addEventListener + data-page
+        // (1) Não fechar menu no desktop ao navegar
+        // ==========================================
         function mudarPagina(idDaPagina, botaoClicado) {
             const paginas = document.querySelectorAll('.page');
             const botoes = document.querySelectorAll('.nav-btn');
@@ -671,14 +778,67 @@
             botoes.forEach(botao => botao.classList.remove('active-link'));
 
             const paginaAlvo = document.getElementById(idDaPagina);
+            if (!paginaAlvo) return;
+
             botaoClicado.classList.add('active-link');
             
             void paginaAlvo.offsetWidth; 
             paginaAlvo.classList.add('active', 'animate-page');
             
-            // Fecha o menu lateral automaticamente ao clicar em um link
-            body.classList.add('menu-collapsed');
+            // Fecha o menu apenas no mobile (no desktop a sidebar faz parte do layout)
+            if (window.innerWidth <= 900) {
+                body.classList.add('menu-collapsed');
+                atualizarAriaMenu();
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.nav-btn').forEach((btn) => {
+            btn.addEventListener('click', () => mudarPagina(btn.dataset.page, btn));
+        });
+
+        // ==========================================
+        // (13) Scroll lock robusto para iOS
+        // ==========================================
+        let scrollPos = 0;
+
+        function lockScroll() {
+            scrollPos = window.scrollY || window.pageYOffset;
+            body.style.top = `-${scrollPos}px`;
+            body.classList.add('player-open');
+        }
+
+        function unlockScroll() {
+            body.classList.remove('player-open');
+            body.style.top = '';
+            window.scrollTo(0, scrollPos);
+        }
+
+        // ==========================================
+        // (2) Focus trap reutilizável
+        // ==========================================
+        const FOCUSABLE_SELECTOR =
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+            'textarea:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])';
+
+        function getFocusable(container) {
+            return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR))
+                .filter(el => el.offsetParent !== null || el.tagName === 'IFRAME');
+        }
+
+        function trapFocus(e, container) {
+            if (e.key !== 'Tab') return;
+            const focusable = getFocusable(container);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
         }
 
         // ==========================================
@@ -692,32 +852,38 @@
         const playerClose = document.getElementById('player-close');
         let ultimoBotaoPlayer;
 
+        // (12) Tratamento de falha no carregamento do iframe
+        playerFrame.addEventListener('error', () => {
+            playerFrame.style.display = 'none';
+            playerMessage.textContent = 'Não foi possível carregar o player. Tente novamente mais tarde.';
+            playerMessage.classList.add('is-visible');
+        });
+
         function abrirPlayer(botao) {
             ultimoBotaoPlayer = botao;
-            playerTitle.textContent = botao.dataset.playerTitle;
-            playerFrame.src = botao.dataset.playerUrl;
+            playerTitle.textContent = botao.dataset.playerTitle || '';
+            playerFrame.src = botao.dataset.playerUrl || '';
             
-            // 1. Ajusta a ALTURA exata que o iframe vai ter (ex: 120px ou 340px)
             if (botao.dataset.playerHeight) {
                 playerFrame.style.height = botao.dataset.playerHeight;
-                playerFrame.style.aspectRatio = "unset"; 
+                playerFrame.style.aspectRatio = 'unset'; 
             } else {
-                playerFrame.style.height = "auto";
-                playerFrame.style.aspectRatio = "16 / 9"; 
+                playerFrame.style.height = 'auto';
+                playerFrame.style.aspectRatio = '16 / 9'; 
             }
 
-            // 2. Ajusta a LARGURA da janela inteira para não sobrar espaço preto
             if (botao.dataset.playerWidth) {
                 playerWindow.style.maxWidth = botao.dataset.playerWidth;
             } else {
-                playerWindow.style.maxWidth = "900px"; // Padrão largo para vídeos e afins
+                playerWindow.style.maxWidth = '900px';
             }
 
             playerFrame.style.display = botao.dataset.playerUrl ? 'block' : 'none';
+            playerMessage.textContent = 'O link deste player ainda será adicionado.';
             playerMessage.classList.toggle('is-visible', !botao.dataset.playerUrl);
             playerModal.classList.add('is-open');
             playerModal.setAttribute('aria-hidden', 'false');
-            body.classList.add('player-open'); // Trava o scroll do fundo
+            lockScroll();
             playerClose.focus();
         }
 
@@ -725,7 +891,7 @@
             playerModal.classList.remove('is-open');
             playerModal.setAttribute('aria-hidden', 'true');
             playerFrame.src = '';
-            body.classList.remove('player-open');
+            unlockScroll();
             if (ultimoBotaoPlayer) ultimoBotaoPlayer.focus();
         }
 
@@ -733,8 +899,10 @@
             botao.addEventListener('click', () => abrirPlayer(botao));
         });
 
-        // Só fecha ao clicar intencionalmente na seta
         playerClose.addEventListener('click', fecharPlayer);
+
+        // (2) Focus trap dentro do player
+        playerModal.addEventListener('keydown', (e) => trapFocus(e, playerModal));
 
         // ==========================================
         // LÓGICA DA PÁGINA DE TEXTOS
@@ -759,9 +927,8 @@
 
             textModal.classList.add('is-open');
             textModal.setAttribute('aria-hidden', 'false');
-            body.classList.add('player-open'); 
+            lockScroll();
             
-            // Retorna o scroll para o topo toda vez que uma página abre
             textModal.scrollTop = 0;
             
             textClose.focus();
@@ -770,12 +937,38 @@
         function fecharTexto() {
             textModal.classList.remove('is-open');
             textModal.setAttribute('aria-hidden', 'true');
-            body.classList.remove('player-open');
+            unlockScroll();
             if (ultimoBotaoTexto) ultimoBotaoTexto.focus();
         }
 
-        // Só fecha ao clicar intencionalmente na seta
         textClose.addEventListener('click', fecharTexto);
+
+        // (2) Focus trap dentro do modal de texto
+        textModal.addEventListener('keydown', (e) => trapFocus(e, textModal));
+
+        // ==========================================
+        // (2) ESC fecha qualquer modal aberto
+        // ==========================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (playerModal.classList.contains('is-open')) fecharPlayer();
+            if (textModal.classList.contains('is-open')) fecharTexto();
+        });
+
+        // ==========================================
+        // (11) Botão "voltar ao topo"
+        // ==========================================
+        const backToTop = document.getElementById('back-to-top');
+
+        function atualizarBackToTop() {
+            backToTop.classList.toggle('visible', window.scrollY > 800);
+        }
+        window.addEventListener('scroll', atualizarBackToTop, { passive: true });
+        atualizarBackToTop();
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
