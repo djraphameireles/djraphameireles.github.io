@@ -542,6 +542,13 @@
 </head>
 <body>
 
+    <!-- Aplicar estado inicial do menu ANTES da sidebar renderizar (evita flash) -->
+    <script>
+        if (window.innerWidth <= 900) {
+            document.body.classList.add('menu-collapsed');
+        }
+    </script>
+
     <button id="menu-toggle" class="menu-toggle-btn" onclick="toggleMenu()" aria-label="Abrir/Fechar Menu">
         <div class="menu-icon">
             <span></span>
@@ -648,12 +655,8 @@
     <script>
         const body = document.body;
 
-        // Configuração inicial do menu responsivo
-        window.onload = () => {
-            if (window.innerWidth <= 900) {
-                body.classList.add('menu-collapsed');
-            }
-        };
+        // (A inicialização do menu responsivo agora é feita por um script inline
+        // no topo do <body>, evitando o "flash" do menu abrindo antes de fechar.)
 
         function toggleMenu() {
             body.classList.toggle('menu-collapsed');
